@@ -1,0 +1,8 @@
+database = 'capstone-finance-group1'
+table = 'dbo.FederalPoverty'
+table2 = 'dbo.Year'
+table3 = 'dbo.FederalFinances'
+table4 = 'dbo.FederalPolitics'
+username = 'bvanderh'
+password = 'Cheez-It1!'
+server = 'gen10-data-fundamentals-22-07-sql-server.database.windows.net'
