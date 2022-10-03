@@ -143,7 +143,7 @@ fed_fig6 = px.bar(df_bar, x='Poverty Factors', y= 'Correlation', labels={
 fed_fig6.update_layout(title = {'font':{'size':15}}, title_x=0.5, yaxis_range=[-1,1])
 
 
-query = f'''select State, Year, PovertyPerc, HighSchoolDiploma
+query = f'''select State, Year, PovertyPerc, HighSchoolDiploma, BachelorsDegree
             from dbo.State
             join dbo.StateYear on dbo.StateYear.StateId = dbo.State.StateId
             join dbo.Year on dbo.Year.YearId = dbo.StateYear.YearId
@@ -159,6 +159,13 @@ fed_fig8 = px.scatter(df_8, x='PovertyPerc', y= 'HighSchoolDiploma', opacity = 0
                         title= '<b>Percentage under Poverty Line vs. <br>High School Diploma Rate by State')
 fed_fig8.update_layout(title= {'font': {'size': 15}}, title_x = 0.5)
 
+# fed_fig9 = px.scatter(df_8, x='PovertyPerc', y= 'BachelorsDegree', opacity = 0.5, trendline='ols', trendline_color_override='red', labels={
+#                         'PovertyPerc': 'Population Under Poverty Level (%)',
+#                         'BachelorsDegree': 'Bachelor\'s Degree Rate (%)'
+#                         },
+#                         title= '<b>Percentage under Poverty Line vs. <br>Bachelor\'s Degree Rate by State')
+# fed_fig9.update_layout(title= {'font': {'size': 15}}, title_x = 0.5)
+
 #state level
 
 query = f"select * from StateYear join StateDrug on StateYear.StateYearId=StateDrug.StateYearId join StateFinances on StateYear.StateYearId=StateFinances.StateYearId join StatePolitics on StateYear.StateYearId=StatePolitics.StateYearId join StatePoverty on StateYear.StateYearId=StatePoverty.StateYearId join StateUnemployment on StateYear.StateYearId=StateUnemployment.StateYearId join Year on StateYear.YearId=Year.YearId join State on StateYear.StateId=State.StateId join Party on StatePolitics.PartyId=Party.PartyId"
@@ -167,13 +174,13 @@ df = pd.read_sql(query,conn)
 df=df.drop(columns=['StateId','YearId','PartyId','StateYearId','Id'])
 states = str = sorted(list(df['State'].unique()))
 
-fed_fig7 = px.scatter(df, x='PovertyPerc', y='Unemployment Percentage Rate', trendline = 'ols', trendline_color_override= "red", labels={
-                        "PovertyPerc" : "Population Under Poverty Level (%)",
-                        "Unemployment Percentage Rate" : 'Unemployment Rate (%)'
-                    },
-                    title = '<b>Percentage under Poverty Line by State vs. <br>Unemployment Rate by State')
+# fed_fig7 = px.scatter(df, x='PovertyPerc', y='Unemployment Percentage Rate', trendline = 'ols', trendline_color_override= "red", labels={
+#                         "PovertyPerc" : "Population Under Poverty Level (%)",
+#                         "Unemployment Percentage Rate" : 'Unemployment Rate (%)'
+#                     },
+#                     title = '<b>Percentage under Poverty Line by State vs. <br>Unemployment Rate by State')
 
-fed_fig7.update_layout(title = {'font':{'size':15}}, title_x = 0.5)
+# fed_fig7.update_layout(title = {'font':{'size':15}}, title_x = 0.5)
 
 fig1 = px.scatter(df, 
                 x='AlcoholTax',
@@ -395,13 +402,13 @@ app.layout = (html.Div(children=[
                 style = {'width': '100%'}
             )
         ),
-        dbc.Col( 
-            dcc.Graph(
-                id = 'state-unemployment', 
-                figure = fed_fig7,
-                style = {'width': '100%'}
-            )
-        ),
+        # dbc.Col( 
+        #     dcc.Graph(
+        #         id = 'state-ba', 
+        #         figure = fed_fig9,
+        #         style = {'width': '100%'}
+        #     )
+        # ),
     ]),
         
 
@@ -498,7 +505,7 @@ app.layout = (html.Div(children=[
         ]),
         html.P('''Poverty is a complex issue: no one related factor correlates strongly as all factors have at least some effect
         on poverty rates.''', style={'textAlign': 'center'}),
-        html.P('Please see our technical report for a thorough discussion of our results', style={'textAlign': 'center'})
+        html.H5('Please see our technical report for a thorough discussion of our results', style={'textAlign': 'center'})
     ], style = {'marginTop': '1em'}),
 
 ], style= CONTENT_STYLE))
@@ -509,7 +516,7 @@ app.layout = (html.Div(children=[
 
 @app.callback(
     [Output(component_id='state-poverty-factors-bar', component_property='figure'),
-    Output(component_id='state-unemployment', component_property='figure'),
+    # Output(component_id='state-ba', component_property='figure'),
     Output(component_id='state-hs', component_property='figure'),
     Output(component_id='alcohol', component_property='figure'),
     Output(component_id='tobacco', component_property='figure'),
@@ -543,14 +550,14 @@ def update_graph(label_selected):
                     text_auto= True)
     fed_fig6.update_layout(title = {'font':{'size':15}}, title_x=0.5, yaxis_range=[-1,1])
 
-    fed_fig7 = px.scatter(dff1, x='PovertyPerc', y='Unemployment Percentage Rate', opacity = 0.5,
-                            trendline = 'ols', trendline_color_override= "red", labels={
-                            "PovertyPerc" : "Population Under Poverty Level (%)",
-                            "Unemployment Percentage Rate" : 'Unemployment Rate (%)'
-                            },
-                            title = '<b>Percentage under Poverty Line vs. <br>Unemployment Rate by State')
+    # fed_fig7 = px.scatter(dff1, x='PovertyPerc', y='Unemployment Percentage Rate', opacity = 0.5,
+    #                         trendline = 'ols', trendline_color_override= "red", labels={
+    #                         "PovertyPerc" : "Population Under Poverty Level (%)",
+    #                         "Unemployment Percentage Rate" : 'Unemployment Rate (%)'
+    #                         },
+    #                         title = '<b>Percentage under Poverty Line vs. <br>Unemployment Rate by State')
 
-    fed_fig7.update_layout(title = {'font':{'size':15}}, title_x = 0.5)
+    # fed_fig7.update_layout(title = {'font':{'size':15}}, title_x = 0.5)
 
     fed_fig8 = px.scatter(dff3, x='PovertyPerc', y= 'HighSchoolDiploma', opacity = 0.5, trendline='ols', trendline_color_override='red', 
                         labels={
@@ -559,6 +566,13 @@ def update_graph(label_selected):
                         },
                         title= '<b>Percentage under Poverty Line vs. <br>High School Diploma Rate by State')
     fed_fig8.update_layout(title= {'font': {'size': 15}}, title_x = 0.5)
+
+    # fed_fig9 = px.scatter(dff3, x='PovertyPerc', y= 'BachelorsDegree', opacity = 0.5, trendline='ols', trendline_color_override='red', labels={
+    #                     'PovertyPerc': 'Population Under Poverty Level (%)',
+    #                     'BachelorsDegree': 'Bachelor\'s Degree Rate (%)'
+    #                     },
+    #                     title= '<b>Percentage under Poverty Line vs. <br>Bachelor\'s Degree Rate by State')
+    # fed_fig9.update_layout(title= {'font': {'size': 15}}, title_x = 0.5)
 
 
     fig1 = px.scatter(dff1, 
@@ -652,7 +666,7 @@ def update_graph(label_selected):
         title = {'font':{'size':15}},
         title_x=0.5
     )
-    return fed_fig6, fed_fig7, fed_fig8, fig1, fig2, fig3, fig4, fig5, fig6, fig7
+    return fed_fig6, fed_fig8, fig1, fig2, fig3, fig4, fig5, fig6, fig7
 
 if __name__ == '__main__':
     app.run_server(debug=True)
