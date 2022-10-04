@@ -505,7 +505,7 @@ app.layout = (html.Div(children=[
         ]),
         html.P('''Poverty is a complex issue: no one related factor correlates strongly as all factors have at least some effect
         on poverty rates.''', style={'textAlign': 'center'}),
-        html.H5('Please see our technical report for a thorough discussion of our results', style={'textAlign': 'center'})
+        html.H6('Please see our technical report for a thorough discussion of our results', style={'textAlign': 'center'})
     ], style = {'marginTop': '1em'}),
 
 ], style= CONTENT_STYLE))
