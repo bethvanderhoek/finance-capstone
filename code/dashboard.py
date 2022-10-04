@@ -391,7 +391,7 @@ app.layout = (html.Div(children=[
         style = {'marginBottom': '1em'}
     ),
     html.H5(children='''
-        3b. Are unemployment or education attainment rates directly related to state poverty levels?
+        3b. Are education attainment rates directly related to state poverty levels?
     '''),
     
     dbc.Row([
